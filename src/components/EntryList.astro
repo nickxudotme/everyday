@@ -13,7 +13,7 @@ const { entries } = Astro.props;
   {
     entries.map((entry: Note) => (
       <li>
-        <a class="entry-title" href={`/notes/${entry.slug}/`}>
+        <a class="entry-title" href={`/${entry.slug}`}>
           {entry.data.title}
         </a>
         <div class="entry-meta">
