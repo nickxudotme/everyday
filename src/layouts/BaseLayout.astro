@@ -19,6 +19,27 @@ const pageTitle = title === 'everyday' ? title : `${title} - everyday`;
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <style is:inline>
+      html,
+      body {
+        background: #f7f2ea;
+        color-scheme: light;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        html:not([data-theme='light']),
+        html:not([data-theme='light']) body {
+          background: #151816;
+          color-scheme: dark;
+        }
+      }
+
+      html[data-theme='dark'],
+      html[data-theme='dark'] body {
+        background: #151816;
+        color-scheme: dark;
+      }
+    </style>
     <script is:inline>
       (() => {
         const storedTheme = localStorage.getItem('theme');
