@@ -1,30 +1,25 @@
 ---
 import { formatDate, readingTime } from '../lib/content';
-import type { Writing } from '../lib/content';
+import type { Note } from '../lib/content';
 
 interface Props {
-  entries: Writing[];
-  kind?: 'notes' | 'essays';
+  entries: Note[];
 }
 
-const { entries, kind } = Astro.props;
+const { entries } = Astro.props;
 ---
 
-<ol class:list={['entry-list', kind === 'notes' ? 'compact' : '']}>
+<ol class="entry-list compact">
   {
-    entries.map((entry: Writing) => {
-      const entryKind = kind ?? entry.collection;
-      const extraMeta = entry.collection === 'notes' ? entry.data.mood : entry.data.series;
-
-      return (
+    entries.map((entry: Note) => (
       <li>
-        <a class="entry-title" href={`/${entryKind}/${entry.slug}/`}>
+        <a class="entry-title" href={`/notes/${entry.slug}/`}>
           {entry.data.title}
         </a>
         <div class="entry-meta">
           <time datetime={entry.data.date.toISOString()}>{formatDate(entry.data.date)}</time>
           <span>{readingTime(entry.body)} min</span>
-          {extraMeta && <span>{extraMeta}</span>}
+          {entry.data.mood && <span>{entry.data.mood}</span>}
         </div>
         {entry.data.summary && <p>{entry.data.summary}</p>}
         {
@@ -37,7 +32,6 @@ const { entries, kind } = Astro.props;
           )
         }
       </li>
-      );
-    })
+    ))
   }
 </ol>

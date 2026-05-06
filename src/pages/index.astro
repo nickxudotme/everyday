@@ -5,18 +5,17 @@ import EntryList from '../components/EntryList.astro';
 import { byDateDesc, isPublished } from '../lib/content';
 
 const notes = (await getCollection('notes')).filter(isPublished).sort(byDateDesc);
-const essays = (await getCollection('essays')).filter(isPublished).sort(byDateDesc);
-const latest = [...notes, ...essays].sort(byDateDesc).slice(0, 5);
+const latest = notes.slice(0, 8);
 ---
 
-<BaseLayout title="everyday" description="NX 的短记录和长思考。">
+<BaseLayout title="everyday" description="NX 的日常短记录和碎碎念。">
   <section class="home-hero">
     <div>
       <p class="kicker">everyday.nickxu.me</p>
       <h1>把还没有想清楚的生活，也先写下来。</h1>
       <p>
-        这里放短的 notes，也放慢慢长成的 essays。它不是过去博客的替代品，
-        更像一个恢复持续输出的入口。
+        这里只放短的 notes：一些念头、观察、困惑和当天留下来的片段。
+        如果某个问题慢慢长大，它以后会去 blog.nickxu.me。
       </p>
     </div>
     <aside class="today-panel" aria-label="Writing mode">
@@ -32,10 +31,10 @@ const latest = [...notes, ...essays].sort(byDateDesc).slice(0, 5);
       <strong>零散、及时、不必完整</strong>
       <small>{notes.length} entries</small>
     </a>
-    <a class="mode-link essays-mode" href="/essays/">
-      <span>Essays</span>
-      <strong>阶段、复盘、长期思考</strong>
-      <small>{essays.length} entries</small>
+    <a class="mode-link blog-mode" href="https://blog.nickxu.me/">
+      <span>Blog</span>
+      <strong>想清楚之后，再认真写</strong>
+      <small>coming next</small>
     </a>
   </section>
 

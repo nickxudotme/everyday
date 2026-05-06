@@ -1,12 +1,12 @@
 import type { CollectionEntry } from 'astro:content';
 
-export type Writing = CollectionEntry<'notes'> | CollectionEntry<'essays'>;
+export type Note = CollectionEntry<'notes'>;
 
-export function isPublished<T extends Writing>(entry: T) {
+export function isPublished<T extends Note>(entry: T) {
   return !entry.data.draft;
 }
 
-export function byDateDesc<T extends Writing>(a: T, b: T) {
+export function byDateDesc<T extends Note>(a: T, b: T) {
   return b.data.date.valueOf() - a.data.date.valueOf();
 }
 

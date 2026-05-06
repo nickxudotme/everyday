@@ -4,7 +4,7 @@ import '../styles/global.css';
 
 const {
   title = 'everyday',
-  description = 'Short notes and slower essays by NX.'
+  description = 'Short everyday notes by NX.'
 } = Astro.props;
 
 const pageTitle = title === 'everyday' ? title : `${title} - everyday`;
@@ -19,6 +19,14 @@ const pageTitle = title === 'everyday' ? title : `${title} - everyday`;
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <script is:inline>
+      (() => {
+        const storedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = storedTheme || (prefersDark ? 'dark' : 'light');
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
     <title>{pageTitle}</title>
   </head>
   <body>
@@ -29,8 +37,27 @@ const pageTitle = title === 'everyday' ? title : `${title} - everyday`;
       </main>
       <footer class="site-footer">
         <span>everyday.nickxu.me</span>
-        <span>Short notes become better essays.</span>
+        <span>Fragments for a life in progress.</span>
       </footer>
     </div>
+    <script>
+      const toggle = document.querySelector('[data-theme-toggle]');
+      const root = document.documentElement;
+
+      function syncThemeButton() {
+        const isDark = root.dataset.theme === 'dark';
+        toggle?.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+        toggle?.setAttribute('aria-pressed', String(isDark));
+      }
+
+      toggle?.addEventListener('click', () => {
+        const nextTheme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+        root.dataset.theme = nextTheme;
+        localStorage.setItem('theme', nextTheme);
+        syncThemeButton();
+      });
+
+      syncThemeButton();
+    </script>
   </body>
 </html>

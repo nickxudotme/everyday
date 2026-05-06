@@ -2,7 +2,6 @@
 const nav = [
   { href: '/', label: 'Everyday' },
   { href: '/notes/', label: 'Notes' },
-  { href: '/essays/', label: 'Essays' },
   { href: '/about/', label: 'About' }
 ];
 
@@ -14,13 +13,19 @@ const currentPath = Astro.url.pathname;
     <span class="brand-mark">NX</span>
     <span>everyday</span>
   </a>
-  <nav aria-label="Primary">
-    {
-      nav.map((item) => (
-        <a class:list={[currentPath === item.href && 'active']} href={item.href}>
-          {item.label}
-        </a>
-      ))
-    }
-  </nav>
+  <div class="header-actions">
+    <nav aria-label="Primary">
+      {
+        nav.map((item) => (
+          <a class:list={[currentPath === item.href && 'active']} href={item.href}>
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+    <button class="theme-toggle" type="button" aria-label="Switch to dark mode" data-theme-toggle>
+      <span class="theme-icon light" aria-hidden="true"></span>
+      <span class="theme-icon dark" aria-hidden="true"></span>
+    </button>
+  </div>
 </header>

@@ -1,11 +1,10 @@
 # everyday
 
-`everyday.nickxu.me` is a lightweight writing space for short notes and slower essays.
+`everyday.nickxu.me` is a lightweight writing space for short notes.
 
 ## Content
 
 - `src/content/notes`: short, frequent fragments.
-- `src/content/essays`: longer, more durable reflections.
 
 Create a Markdown file with frontmatter:
 

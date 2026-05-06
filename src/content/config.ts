@@ -16,11 +16,4 @@ const notes = defineCollection({
   })
 });
 
-const essays = defineCollection({
-  type: 'content',
-  schema: baseSchema.extend({
-    series: z.string().optional()
-  })
-});
-
-export const collections = { notes, essays };
+export const collections = { notes };

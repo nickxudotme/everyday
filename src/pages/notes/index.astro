@@ -11,7 +11,7 @@ const notes = (await getCollection('notes')).filter(isPublished).sort(byDateDesc
   <section class="page-intro">
     <p class="kicker">Notes</p>
     <h1>短记录，先接住念头。</h1>
-    <p>这里不追求完整。一个问题、一段观察、一点工作后的余温，都可以先放在这里。</p>
+    <p>这里不追求完整。一个问题、一段观察、一点工作后的余温，都可以先放下来。</p>
   </section>
-  <EntryList entries={notes} kind="notes" />
+  <EntryList entries={notes} />
 </BaseLayout>
