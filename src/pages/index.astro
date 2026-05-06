@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EntryList from '../components/EntryList.astro';
+import { byDateDesc, isPublished } from '../lib/content';
+
+const notes = (await getCollection('notes')).filter(isPublished).sort(byDateDesc);
+const essays = (await getCollection('essays')).filter(isPublished).sort(byDateDesc);
+const latest = [...notes, ...essays].sort(byDateDesc).slice(0, 5);
+---
+
+<BaseLayout title="everyday" description="NX 的短记录和长思考。">
+  <section class="home-hero">
+    <div>
+      <p class="kicker">everyday.nickxu.me</p>
+      <h1>把还没有想清楚的生活，也先写下来。</h1>
+      <p>
+        这里放短的 notes，也放慢慢长成的 essays。它不是过去博客的替代品，
+        更像一个恢复持续输出的入口。
+      </p>
+    </div>
+    <aside class="today-panel" aria-label="Writing mode">
+      <span>Today</span>
+      <strong>{new Intl.DateTimeFormat('zh-CN', { month: 'long', day: 'numeric' }).format(new Date())}</strong>
+      <p>一句话也算写作。先留下，再回头。</p>
+    </aside>
+  </section>
+
+  <section class="split-section">
+    <a class="mode-link notes-mode" href="/notes/">
+      <span>Notes</span>
+      <strong>零散、及时、不必完整</strong>
+      <small>{notes.length} entries</small>
+    </a>
+    <a class="mode-link essays-mode" href="/essays/">
+      <span>Essays</span>
+      <strong>阶段、复盘、长期思考</strong>
+      <small>{essays.length} entries</small>
+    </a>
+  </section>
+
+  <section class="content-section">
+    <div class="section-heading">
+      <p class="kicker">Latest</p>
+      <h2>最近写下的东西</h2>
+    </div>
+    <EntryList entries={latest} />
+  </section>
+</BaseLayout>

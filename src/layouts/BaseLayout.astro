@@ -1,0 +1,36 @@
+---
+import SiteHeader from '../components/SiteHeader.astro';
+import '../styles/global.css';
+
+const {
+  title = 'everyday',
+  description = 'Short notes and slower essays by NX.'
+} = Astro.props;
+
+const pageTitle = title === 'everyday' ? title : `${title} - everyday`;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <div class="page-shell">
+      <SiteHeader />
+      <main>
+        <slot />
+      </main>
+      <footer class="site-footer">
+        <span>everyday.nickxu.me</span>
+        <span>Short notes become better essays.</span>
+      </footer>
+    </div>
+  </body>
+</html>

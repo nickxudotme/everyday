@@ -1,0 +1,26 @@
+---
+const nav = [
+  { href: '/', label: 'Everyday' },
+  { href: '/notes/', label: 'Notes' },
+  { href: '/essays/', label: 'Essays' },
+  { href: '/about/', label: 'About' }
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <a class="brand" href="/" aria-label="Everyday home">
+    <span class="brand-mark">NX</span>
+    <span>everyday</span>
+  </a>
+  <nav aria-label="Primary">
+    {
+      nav.map((item) => (
+        <a class:list={[currentPath === item.href && 'active']} href={item.href}>
+          {item.label}
+        </a>
+      ))
+    }
+  </nav>
+</header>
