@@ -290,6 +290,16 @@ h2 {
   line-height: 1.1;
 }
 
+.today-panel em {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--green);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 700;
+}
+
 .today-panel p {
   color: var(--muted);
   font-size: 14px;
@@ -300,6 +310,38 @@ h2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
   padding: 24px 0;
+}
+
+.recent-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  padding: 18px 0 6px;
+}
+
+.recent-strip a {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+
+.recent-strip time {
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+}
+
+.recent-strip span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 15px;
+}
+
+.recent-strip a:hover span {
+  color: var(--red);
 }
 
 .mode-link {
@@ -495,6 +537,7 @@ h2 {
   max-width: 100%;
   height: auto;
   margin: 0 0 1.2em;
+  cursor: zoom-in;
 }
 
 .prose code {
@@ -577,6 +620,102 @@ html[data-theme='dark'] .prose .astro-code span {
   color: var(--red);
 }
 
+.notes-return-link {
+  display: inline-block;
+  margin-top: 26px;
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+}
+
+.notes-return-link:hover {
+  color: var(--ink);
+}
+
+.timeline-layout {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 30px;
+  align-items: start;
+}
+
+.timeline-index {
+  position: sticky;
+  top: 24px;
+  display: grid;
+  justify-content: stretch;
+  gap: 4px;
+}
+
+.timeline-index a {
+  padding: 7px 0;
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+}
+
+.timeline-index a:hover {
+  color: var(--ink);
+}
+
+.entry-stream {
+  min-width: 0;
+}
+
+.archive-month + .archive-month {
+  margin-top: 34px;
+}
+
+.archive-month h3 {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.stream-sentinel {
+  height: 1px;
+}
+
+.image-lightbox {
+  width: min(calc(100vw - 32px), 1200px);
+  max-width: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.image-lightbox::backdrop {
+  background: rgba(21, 24, 22, 0.78);
+}
+
+.image-lightbox img {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100vh - 48px);
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.34);
+}
+
+.image-lightbox button {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--ink);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
 .rule-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -636,6 +775,31 @@ html[data-theme='dark'] .prose .astro-code span {
   .split-section,
   .rule-grid {
     grid-template-columns: 1fr;
+  }
+
+  .recent-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .recent-strip span {
+    white-space: normal;
+  }
+
+  .timeline-layout {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .timeline-index {
+    position: static;
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .timeline-index a {
+    flex: 0 0 auto;
   }
 
   .home-hero {

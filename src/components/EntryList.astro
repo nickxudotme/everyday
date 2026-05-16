@@ -4,15 +4,16 @@ import type { Note } from '../lib/content';
 
 interface Props {
   entries: Note[];
+  startIndex?: number;
 }
 
-const { entries } = Astro.props;
+const { entries, startIndex = 0 } = Astro.props;
 ---
 
 <ol class="entry-list compact">
   {
-    entries.map((entry: Note) => (
-      <li>
+    entries.map((entry: Note, index: number) => (
+      <li data-entry-index={startIndex + index}>
         <a class="entry-title" href={`/${entry.slug}`}>
           {entry.data.title}
         </a>

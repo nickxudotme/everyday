@@ -79,6 +79,45 @@ const pageTitle = title === 'everyday' ? title : `${title} - everyday`;
       });
 
       syncThemeButton();
+
+      const lightbox = document.createElement('dialog');
+      lightbox.className = 'image-lightbox';
+      lightbox.innerHTML = '<button type="button" aria-label="Close image">×</button><img alt="" />';
+      document.body.append(lightbox);
+
+      const lightboxImage = lightbox.querySelector('img');
+      const lightboxClose = lightbox.querySelector('button');
+
+      document.querySelectorAll<HTMLImageElement>('.prose img').forEach((image) => {
+        image.tabIndex = 0;
+        image.setAttribute('role', 'button');
+        image.setAttribute('aria-label', image.alt ? `查看原图：${image.alt}` : '查看原图');
+
+        const openImage = () => {
+          if (!(lightboxImage instanceof HTMLImageElement)) {
+            return;
+          }
+
+          lightboxImage.src = image.currentSrc || image.src;
+          lightboxImage.alt = image.alt;
+          lightbox.showModal();
+        };
+
+        image.addEventListener('click', openImage);
+        image.addEventListener('keydown', (event) => {
+          if (event instanceof KeyboardEvent && (event.key === 'Enter' || event.key === ' ')) {
+            event.preventDefault();
+            openImage();
+          }
+        });
+      });
+
+      lightboxClose?.addEventListener('click', () => lightbox.close());
+      lightbox.addEventListener('click', (event) => {
+        if (event.target === lightbox) {
+          lightbox.close();
+        }
+      });
     </script>
   </body>
 </html>

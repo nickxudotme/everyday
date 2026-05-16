@@ -2,10 +2,30 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EntryList from '../components/EntryList.astro';
-import { byDateDesc, isPublished } from '../lib/content';
+import { byDateDesc, dailyStreak, formatDate, formatMonth, isPublished, monthKey } from '../lib/content';
 
 const notes = (await getCollection('notes')).filter(isPublished).sort(byDateDesc);
-const latest = notes.slice(0, 8);
+const recent = notes.slice(0, 5);
+const streak = dailyStreak(notes);
+const groupedNotes = Object.values(
+  notes.reduce<Record<string, { key: string; label: string; entries: typeof notes }>>((groups, entry) => {
+    const key = monthKey(entry.data.date);
+    groups[key] ??= {
+      key,
+      label: formatMonth(entry.data.date),
+      entries: []
+    };
+    groups[key].entries.push(entry);
+    return groups;
+  }, {})
+);
+
+let entryOffset = 0;
+const groupedNotesWithOffsets = groupedNotes.map((group) => {
+  const withOffset = { ...group, startIndex: entryOffset };
+  entryOffset += group.entries.length;
+  return withOffset;
+});
 ---
 
 <BaseLayout title="everyday" description="NX 的日常短记录和碎碎念。">
@@ -21,12 +41,24 @@ const latest = notes.slice(0, 8);
     <aside class="today-panel" aria-label="Writing mode">
       <span>Today</span>
       <strong>{new Intl.DateTimeFormat('zh-CN', { month: 'long', day: 'numeric' }).format(new Date())}</strong>
+      <em>已连续记录 {streak} 天</em>
       <p>一句话也算写作。先留下，再回头。</p>
     </aside>
   </section>
 
+  <section class="recent-strip" aria-label="最近更新">
+    {
+      recent.map((entry) => (
+        <a href={`/${entry.slug}`}>
+          <time datetime={entry.data.date.toISOString()}>{formatDate(entry.data.date)}</time>
+          <span>{entry.data.title}</span>
+        </a>
+      ))
+    }
+  </section>
+
   <section class="split-section">
-    <a class="mode-link notes-mode" href="/notes">
+    <a class="mode-link notes-mode" href="#timeline">
       <span>Notes</span>
       <strong>零散、及时、不必完整</strong>
       <small>{notes.length} entries</small>
@@ -38,11 +70,74 @@ const latest = notes.slice(0, 8);
     </a>
   </section>
 
-  <section class="content-section">
+  <section class="content-section stream-section" id="timeline">
     <div class="section-heading">
-      <p class="kicker">Latest</p>
-      <h2>最近写下的东西</h2>
+      <p class="kicker">Timeline</p>
+      <h2>全部笔记</h2>
     </div>
-    <EntryList entries={latest} />
+    <div class="timeline-layout">
+      <aside class="timeline-index" aria-label="时间线">
+        {
+          groupedNotesWithOffsets.map((group) => (
+            <a href={`#month-${group.key}`} data-timeline-index={group.startIndex}>
+              {group.label}
+            </a>
+          ))
+        }
+      </aside>
+      <div class="entry-stream">
+        {
+          groupedNotesWithOffsets.map((group) => (
+            <section class="archive-month" id={`month-${group.key}`} data-month-start={group.startIndex}>
+              <h3>{group.label}</h3>
+              <EntryList entries={group.entries} startIndex={group.startIndex} />
+            </section>
+          ))
+        }
+        <div class="stream-sentinel" aria-hidden="true"></div>
+      </div>
+    </div>
   </section>
+  <script is:inline define:vars={{ totalEntries: notes.length }}>
+    const pageSize = 8;
+    let visibleCount = Math.min(pageSize, totalEntries);
+    const entries = [...document.querySelectorAll('[data-entry-index]')];
+    const months = [...document.querySelectorAll('[data-month-start]')];
+    const sentinel = document.querySelector('.stream-sentinel');
+
+    function syncVisibleEntries() {
+      entries.forEach((entry) => {
+        const index = Number(entry.getAttribute('data-entry-index'));
+        entry.hidden = index >= visibleCount;
+      });
+
+      months.forEach((month) => {
+        month.hidden = [...month.querySelectorAll('[data-entry-index]')].every((entry) => entry.hidden);
+      });
+    }
+
+    function revealThrough(index) {
+      visibleCount = Math.min(totalEntries, Math.max(visibleCount, index + pageSize));
+      syncVisibleEntries();
+    }
+
+    document.querySelectorAll('[data-timeline-index]').forEach((link) => {
+      link.addEventListener('click', () => {
+        revealThrough(Number(link.getAttribute('data-timeline-index')));
+      });
+    });
+
+    if (sentinel instanceof HTMLElement) {
+      const observer = new IntersectionObserver((records) => {
+        if (records.some((record) => record.isIntersecting) && visibleCount < totalEntries) {
+          visibleCount = Math.min(totalEntries, visibleCount + pageSize);
+          syncVisibleEntries();
+        }
+      }, { rootMargin: '240px 0px' });
+
+      observer.observe(sentinel);
+    }
+
+    syncVisibleEntries();
+  </script>
 </BaseLayout>
