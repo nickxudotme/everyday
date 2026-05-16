@@ -536,6 +536,47 @@ html[data-theme='dark'] .prose .astro-code span {
   color: var(--shiki-dark, var(--code-ink));
 }
 
+.note-pagination {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 42px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.note-pagination a {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.note-pagination a:last-child {
+  text-align: right;
+}
+
+.note-pagination span {
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+}
+
+.note-pagination strong {
+  overflow-wrap: anywhere;
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.note-pagination small {
+  color: var(--muted);
+  font-size: 0.8em;
+  font-weight: 500;
+}
+
+.note-pagination a:hover strong {
+  color: var(--red);
+}
+
 .rule-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -616,5 +657,13 @@ html[data-theme='dark'] .prose .astro-code span {
 
   .site-footer {
     flex-direction: column;
+  }
+
+  .note-pagination {
+    grid-template-columns: 1fr;
+  }
+
+  .note-pagination a:last-child {
+    text-align: left;
   }
 }

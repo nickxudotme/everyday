@@ -5,9 +5,11 @@ import type { Note } from '../lib/content';
 
 interface Props {
   entry: Note;
+  previousEntry?: Note;
+  nextEntry?: Note;
 }
 
-const { entry } = Astro.props;
+const { entry, previousEntry, nextEntry } = Astro.props;
 const { Content } = await entry.render();
 ---
 
@@ -36,5 +38,29 @@ const { Content } = await entry.render();
     <div class="prose">
       <Content />
     </div>
+    {(previousEntry || nextEntry) && (
+      <nav class="note-pagination" aria-label="Adjacent notes">
+        {previousEntry ? (
+          <a href={`/${previousEntry.slug}`}>
+            <span>上一篇</span>
+            <strong>
+              {previousEntry.data.title}
+              <small>（{formatDate(previousEntry.data.date)}）</small>
+            </strong>
+          </a>
+        ) : (
+          <span />
+        )}
+        {nextEntry && (
+          <a href={`/${nextEntry.slug}`}>
+            <span>下一篇</span>
+            <strong>
+              {nextEntry.data.title}
+              <small>（{formatDate(nextEntry.data.date)}）</small>
+            </strong>
+          </a>
+        )}
+      </nav>
+    )}
   </article>
 </BaseLayout>
