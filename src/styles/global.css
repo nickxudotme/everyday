@@ -490,6 +490,13 @@ h2 {
   color: var(--muted);
 }
 
+.prose img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 0 1.2em;
+}
+
 .prose code {
   border: 1px solid var(--line);
   border-radius: 5px;
