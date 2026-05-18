@@ -13,7 +13,7 @@ Use this workflow for `/Users/nx/everyday` when the user provides a note/article
 
 Do not rewrite, polish, correct, re-punctuate, reorder, trim, or otherwise edit the body text the user provides.
 
-Only add required Markdown/frontmatter around it. The body must be copied verbatim after the closing `---`.
+Only add required Markdown/frontmatter around it. The body text must be copied verbatim after the closing `---`; for Markdown rendering, preserve each input line's text but insert a blank line between adjacent nonblank body lines.
 
 ## File and URL
 
@@ -52,7 +52,13 @@ Rules:
 
 ## Body handling
 
-After frontmatter, insert exactly one blank line, then paste the user's body exactly.
+After frontmatter, insert exactly one blank line, then paste the user's body with each original nonblank line separated by one blank line.
+
+Line spacing rule:
+
+- Preserve every body line's text exactly.
+- Insert one blank line between adjacent nonblank body lines so each line renders as its own paragraph.
+- Preserve blank lines the user already included; do not collapse intentional paragraph breaks.
 
 Allowed changes outside the body:
 
@@ -64,7 +70,7 @@ Disallowed changes to the body:
 
 - No grammar fixes.
 - No typo fixes.
-- No paragraph splitting or joining.
+- No paragraph splitting or joining except inserting blank lines between adjacent nonblank input lines for Markdown rendering.
 - No Markdown formatting unless the user included it.
 - No conversion of product names or dates.
 
