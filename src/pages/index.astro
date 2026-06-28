@@ -2,11 +2,10 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EntryList from '../components/EntryList.astro';
-import { byDateDesc, dailyStreak, formatDate, formatMonth, isPublished, monthKey } from '../lib/content';
+import { byDateDesc, formatDate, formatMonth, isPublished, monthKey } from '../lib/content';
 
 const notes = (await getCollection('notes')).filter(isPublished).sort(byDateDesc);
 const recent = notes.slice(0, 5);
-const streak = dailyStreak(notes);
 const groupedNotes = Object.values(
   notes.reduce<Record<string, { key: string; label: string; entries: typeof notes }>>((groups, entry) => {
     const key = monthKey(entry.data.date);
@@ -41,7 +40,7 @@ const groupedNotesWithOffsets = groupedNotes.map((group) => {
     <aside class="today-panel" aria-label="Writing mode">
       <span>Today</span>
       <strong>{new Intl.DateTimeFormat('zh-CN', { month: 'long', day: 'numeric' }).format(new Date())}</strong>
-      <em>已连续记录 {streak} 天</em>
+      <em>累计记录 {notes.length} 天</em>
       <p>一句话也算写作。先留下，再回头。</p>
     </aside>
   </section>
