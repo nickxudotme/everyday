@@ -6,7 +6,8 @@ const baseSchema = z.object({
   updated: z.coerce.date().optional(),
   summary: z.string().optional(),
   tags: z.array(z.string()).default([]),
-  draft: z.boolean().default(false)
+  draft: z.boolean().default(false),
+  visibility: z.enum(['public', 'private']).default('public')
 });
 
 const notes = defineCollection({

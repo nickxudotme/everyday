@@ -1,5 +1,5 @@
 ---
-import { formatDate, readingTime } from '../lib/content';
+import { formatDate, isPublic, readingTime } from '../lib/content';
 import type { Note } from '../lib/content';
 
 interface Props {
@@ -12,27 +12,33 @@ const { entries, startIndex = 0 } = Astro.props;
 
 <ol class="entry-list compact">
   {
-    entries.map((entry: Note, index: number) => (
-      <li data-entry-index={startIndex + index}>
-        <a class="entry-title" href={`/${entry.slug}`}>
-          {entry.data.title}
-        </a>
-        <div class="entry-meta">
-          <time datetime={entry.data.date.toISOString()}>{formatDate(entry.data.date)}</time>
-          <span>{readingTime(entry.body)} min</span>
-          {entry.data.mood && <span>{entry.data.mood}</span>}
-        </div>
-        {entry.data.summary && <p>{entry.data.summary}</p>}
-        {
-          entry.data.tags.length > 0 && (
+    entries.map((entry: Note, index: number) => {
+      const publicEntry = isPublic(entry);
+
+      return (
+        <li data-entry-index={startIndex + index}>
+          {publicEntry ? (
+            <a class="entry-title" href={`/${entry.slug}`}>
+              {entry.data.title}
+            </a>
+          ) : (
+            <span class="entry-title private-entry-title">{entry.data.title}</span>
+          )}
+          <div class="entry-meta">
+            <time datetime={entry.data.date.toISOString()}>{formatDate(entry.data.date)}</time>
+            {publicEntry ? <span>{readingTime(entry.body)} min</span> : <span>不公开</span>}
+            {publicEntry && entry.data.mood && <span>{entry.data.mood}</span>}
+          </div>
+          {publicEntry && entry.data.summary && <p>{entry.data.summary}</p>}
+          {publicEntry && entry.data.tags.length > 0 && (
             <div class="tags" aria-label="Tags">
               {entry.data.tags.map((tag: string) => (
                 <span>{tag}</span>
               ))}
             </div>
-          )
-        }
-      </li>
-    ))
+          )}
+        </li>
+      );
+    })
   }
 </ol>

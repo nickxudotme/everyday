@@ -6,6 +6,10 @@ export function isPublished<T extends Note>(entry: T) {
   return !entry.data.draft;
 }
 
+export function isPublic<T extends Note>(entry: T) {
+  return entry.data.visibility === 'public';
+}
+
 export function byDateDesc<T extends Note>(a: T, b: T) {
   return b.data.date.valueOf() - a.data.date.valueOf();
 }

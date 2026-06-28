@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EntryList from '../components/EntryList.astro';
-import { byDateDesc, formatDate, formatMonth, isPublished, monthKey } from '../lib/content';
+import { byDateDesc, formatDate, formatMonth, isPublic, isPublished, monthKey } from '../lib/content';
 
 const notes = (await getCollection('notes')).filter(isPublished).sort(byDateDesc);
 const recent = notes.slice(0, 5);
@@ -47,12 +47,20 @@ const groupedNotesWithOffsets = groupedNotes.map((group) => {
 
   <section class="recent-strip" aria-label="最近更新">
     {
-      recent.map((entry) => (
-        <a href={`/${entry.slug}`}>
-          <time datetime={entry.data.date.toISOString()}>{formatDate(entry.data.date)}</time>
-          <span>{entry.data.title}</span>
-        </a>
-      ))
+      recent.map((entry) =>
+        isPublic(entry) ? (
+          <a href={`/${entry.slug}`}>
+            <time datetime={entry.data.date.toISOString()}>{formatDate(entry.data.date)}</time>
+            <span>{entry.data.title}</span>
+          </a>
+        ) : (
+          <div class="private-recent" aria-label={`${entry.data.title} 不公开`}>
+            <time datetime={entry.data.date.toISOString()}>{formatDate(entry.data.date)}</time>
+            <span>{entry.data.title}</span>
+            <em>不公开</em>
+          </div>
+        )
+      )
     }
   </section>
 

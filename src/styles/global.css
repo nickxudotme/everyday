@@ -319,7 +319,8 @@ h2 {
   padding: 18px 0 6px;
 }
 
-.recent-strip a {
+.recent-strip a,
+.private-recent {
   display: grid;
   gap: 4px;
   min-width: 0;
@@ -327,7 +328,8 @@ h2 {
   padding-top: 10px;
 }
 
-.recent-strip time {
+.recent-strip time,
+.private-recent em {
   color: var(--muted);
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 12px;
@@ -338,6 +340,16 @@ h2 {
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 15px;
+}
+
+.private-recent {
+  color: var(--muted);
+}
+
+.private-recent em {
+  color: var(--red);
+  font-style: normal;
+  font-weight: 700;
 }
 
 .recent-strip a:hover span {
@@ -424,6 +436,25 @@ h2 {
 
 .entry-title:hover {
   color: var(--red);
+}
+
+.private-entry-title {
+  color: var(--muted);
+}
+
+.private-entry-title::after {
+  content: '不公开';
+  display: inline-block;
+  margin-left: 10px;
+  transform: translateY(-2px);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 1px 7px;
+  color: var(--red);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
 }
 
 .entry-meta {

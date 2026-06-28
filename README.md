@@ -15,12 +15,15 @@ date: 2026-05-06
 summary: 一句话摘要，可选。
 tags:
   - life
+visibility: public
 ---
 
 正文。
 ```
 
-Drafts can be hidden with `draft: true`.
+Drafts can be hidden completely with `draft: true`.
+
+Published notes can be marked as `visibility: private` to show only an "不公开" hint on the home page without generating a public detail page. The default is `visibility: public`.
 
 ## Commands
 
