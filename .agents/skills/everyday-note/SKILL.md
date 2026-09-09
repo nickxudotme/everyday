@@ -7,7 +7,7 @@ metadata:
 
 # Everyday Note
 
-Use this workflow for `/Users/nx/everyday` when the user provides a note/article and asks to add it to everyday.
+Use this workflow for `/Users/nx/Projects/everyday` when the user provides a note/article and asks to add it to everyday.
 
 ## Non-negotiable rule
 
@@ -78,9 +78,9 @@ Disallowed changes to the body:
 
 After creating the note:
 
-1. Run `npm run build` from `/Users/nx/everyday`.
+1. Run `npm run build` from `/Users/nx/Projects/everyday`.
 2. Confirm the generated route includes `/<YYYY-MM-DD>`.
-3. Start the local dev server with `npm run dev` from `/Users/nx/everyday` so the user can preview the note.
+3. Start the local dev server with `npm run dev` from `/Users/nx/Projects/everyday` so the user can preview the note.
 4. Report the created file path, local preview URL, and public URL.
 
 ## Publish handoff
